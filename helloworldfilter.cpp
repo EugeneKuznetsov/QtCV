@@ -1,4 +1,5 @@
 #include "helloworldfilter.h"
+#include "helloworldfilterrunnable.h"
 
 HelloWorldFilter::HelloWorldFilter(QObject *parent/* = nullptr*/)
     : QAbstractVideoFilter(parent)
@@ -7,5 +8,7 @@ HelloWorldFilter::HelloWorldFilter(QObject *parent/* = nullptr*/)
 
 QVideoFilterRunnable *HelloWorldFilter::createFilterRunnable()
 {
-    return nullptr;
+    // QVideoFilterRunnable instances are managed by Qt Multimedia
+    // and will be automatically destroyed and recreated when necessary
+    return new HelloWorldFilterRunnable(*this);
 }

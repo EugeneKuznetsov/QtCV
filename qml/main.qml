@@ -17,7 +17,11 @@ ApplicationWindow {
             deviceId: cameraId
         }
         filters: [
-            HelloWorldFilter {}
+            HelloWorldFilter {
+                onShutUp: console.log("Mouth closed")
+                onSayHelloWorld: console.log(
+                                     "Mouth opened at [" + mouthX + ";" + mouthY + "]")
+            }
         ]
     }
 }
