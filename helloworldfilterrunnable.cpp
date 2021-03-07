@@ -1,8 +1,11 @@
+#include <QDebug>
 #include "helloworldfilterrunnable.h"
 #include "helloworldfilter.h"
+#include "facedetector.h"
 
 HelloWorldFilterRunnable::HelloWorldFilterRunnable(HelloWorldFilter &qmlFilter)
     : m_filter(qmlFilter)
+    , m_detector(QSharedPointer<FaceDetector>::create())
 {
 }
 
@@ -11,7 +14,13 @@ QVideoFrame HelloWorldFilterRunnable::run(QVideoFrame *input, const QVideoSurfac
     input->map(QAbstractVideoBuffer::ReadOnly);
 
     if (QAbstractVideoBuffer::NoHandle == surfaceFormat.handleType()) {
-        emit m_filter.sayHelloWorld(0, 0, 100, 20);
+//        QImage image(input->bits(), input->width(), input->height(), QVideoFrame::imageFormatFromPixelFormat(input->pixelFormat()));
+        if (m_detector->parseFace(input->image())) {
+            auto face = m_detector->getFaceDetails();
+            emit m_filter.sayHelloWorld(face.x(), face.y(), face.width(), face.height());
+        } else {
+            emit m_filter.shutUp();
+        }
     }
 
     input->unmap();

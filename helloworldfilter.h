@@ -14,6 +14,6 @@ public:
     virtual QVideoFilterRunnable *createFilterRunnable() override;
 
 signals:
-    void sayHelloWorld(int mouthX, int mouthY, int mouthWidth, int mouthHeight);
+    void sayHelloWorld(int x, int y, int w, int h);
     void shutUp();
 };

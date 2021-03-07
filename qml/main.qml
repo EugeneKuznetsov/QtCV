@@ -1,5 +1,6 @@
 import QtQuick 2.15
 import QtQuick.Controls 2.15
+import QtQuick.Controls.Material 2.15
 import QtMultimedia 5.15
 import Eugene.QtCV.Filters 1.0
 
@@ -13,15 +14,34 @@ ApplicationWindow {
     VideoOutput {
         anchors.fill: parent
 
+        fillMode: Image.PreserveAspectCrop
         source: Camera {
             deviceId: cameraId
         }
         filters: [
             HelloWorldFilter {
-                onShutUp: console.log("Mouth closed")
-                onSayHelloWorld: console.log(
-                                     "Mouth opened at [" + mouthX + ";" + mouthY + "]")
+                onSayHelloWorld: {
+                    userLabel.visible = true
+                    userLabel.x = x + w
+                    userLabel.y = y
+                }
+
+                onShutUp: {
+                    userLabel.visible = false
+                }
             }
         ]
+    }
+
+    Pane {
+        id: userLabel
+
+        visible: false
+
+        Label {
+            anchors.fill: parent
+
+            text: "Hello World"
+        }
     }
 }

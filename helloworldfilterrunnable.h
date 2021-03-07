@@ -1,8 +1,10 @@
 #pragma once
 
 #include <QVideoFilterRunnable>
+#include <QSharedPointer>
 
 class HelloWorldFilter;
+class FaceDetector;
 
 class HelloWorldFilterRunnable : public QVideoFilterRunnable
 {
@@ -13,4 +15,5 @@ public:
 
 private:
     HelloWorldFilter &m_filter;
+    QSharedPointer<FaceDetector> m_detector;
 };
