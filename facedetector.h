@@ -8,7 +8,7 @@ class FaceDetector
 public:
     FaceDetector();
 
-    bool parseFace(QImage &&frame);
+    bool parseFace(const QImage &frame);
 
     inline const QRect& getFaceDetails() const {
         return m_face;

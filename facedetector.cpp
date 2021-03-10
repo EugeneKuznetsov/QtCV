@@ -15,13 +15,15 @@ FaceDetector::FaceDetector()
     QFile::remove(tmp_cascade_file);
 }
 
-bool FaceDetector::parseFace(QImage &&frame)
+bool FaceDetector::parseFace(const QImage &frame)
 {
-    m_frame = std::move(frame);
-    m_frame = m_frame.convertToFormat(QImage::Format_RGB888);
+    // bring any QVideoFrame format to a uniformed RGB888
+    m_frame = frame.convertToFormat(QImage::Format_RGB888);
 
+    // trasform Qt QImage to OpenCV image as 8-bits unsigned integer matrix with 3 channels
     cv::Mat convertedFrame(m_frame.height(), m_frame.width(), CV_8UC3, m_frame.bits(), m_frame.bytesPerLine());
 
+    // convert to grayscaled image
     cv::cvtColor(convertedFrame, convertedFrame, cv::COLOR_BGR2GRAY);
 
     std::vector<cv::Rect> faces;

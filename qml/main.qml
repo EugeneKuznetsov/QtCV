@@ -12,36 +12,37 @@ ApplicationWindow {
     minimumHeight: 600
 
     VideoOutput {
+        id: cameraOutput
+
         anchors.fill: parent
 
-        fillMode: Image.PreserveAspectCrop
         source: Camera {
             deviceId: cameraId
         }
         filters: [
             HelloWorldFilter {
                 onSayHelloWorld: {
-                    userLabel.visible = true
-                    userLabel.x = x + w
-                    userLabel.y = y
+                    let face = cameraOutput.mapRectToItem(Qt.rect(x, y, w, h))
+                    userFace.x = face.x
+                    userFace.y = face.y
+                    userFace.width = face.width
+                    userFace.height = face.height
+                    userFace.visible = true
                 }
 
                 onShutUp: {
-                    userLabel.visible = false
+                    userFace.visible = false
                 }
             }
         ]
     }
 
-    Pane {
-        id: userLabel
+    Rectangle {
+        id: userFace
 
+        color: "transparent"
+        border.width: 3
+        border.color: "blue"
         visible: false
-
-        Label {
-            anchors.fill: parent
-
-            text: "Hello World"
-        }
     }
 }
